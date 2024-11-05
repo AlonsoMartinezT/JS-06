@@ -1,61 +1,86 @@
 const IMAGE_URL = "https://placehold.co/200";
-//lo pongo todo en imayusculas porque será una constante global
 const CARD_CONTAINER = document.getElementById("container");
-//son variables contexto¿?
-const CARD = document.getElementById("card");
-const IMG_CONTAINER = document.getElementById("img-container");
+const BTN_HIDE = document.getElementById("btn-hide");
 
-const fetchUserData = () => {
-    //setTimeout (() => {
-        return {
-            id: 1, 
-            username: "User Name",
-            description: "Lorem Ipsum",
-            age: 25,
-            fav_music: {
-                bands: [
-                    "Temerarios",
-                    "Los Panchos",
-                    "Los Acosta", 
-                    "Los Yonics", "Las Jilguerillas",
-                ],
-            },
-        } ;
-    //}  200);
-};
-const USERDATA = fetchUserData();
-//IMG
-const image = document.createElement("img");
-image.src = IMAGE_URL;
-image.alt = "PLacejolder user photo";
-//CARD Desc
-const userName = document.createElement("h3");
-const description = document.createElement("p");
-const age = document.createElement("p");
-//arr.map es muy similar al foreach pero el foreach no regresa nada, solo ejecuta y arr: este si devuelve algo 
-const bands = document.createElement("ul");
+// Usuarios
+const users = [
+    {
+        id: 1,
+        user_name: 'Usuario 1',
+        description: 'Alonso Martinez',
+        age: '23',
+        fav_music: {
+            bands: [
+                'Linkin Park', 'Shaw Mendez', 'Rels B', 'Micro Tdh'
+            ]
+        }
+    },
+    {
+        id: 2,
+        user_name: 'Usuario 2',
+        description: 'Lorem lorem lorem',
+        age: '23',
+        fav_music: {
+            bands: [
+               'Band 1', 'Band 2', 'Band 3', 'Band 4'
+            ]
+        }
+    },
+    {
+        id: 3,
+        user_name: 'Usuario 3',
+        description: 'Lorem lorem lorem',
+        age: '23',
+        fav_music: {
+            bands: [
+               'Band 1', 'Band 2', 'Band 3', 'Band 4'
+            ]
+        }
+    }
+];
 
-console.log(USERDATA);
-const bandList = USERDATA.fav_music.bands.map(e => {
-    const item = document.createElement("li");
-    item.textContent = e; 
-    return item;
-});
-
-// Asignación de datos a los elementos de la tarjeta
-userName.textContent = USERDATA.username;
-description.textContent = USERDATA.description;
-age.textContent = USERDATA.age;
-
-// Añadiendo la imagen y la lista de bandas
-IMG_CONTAINER.appendChild(image);
-bands.append(...bandList);
-CARD.append(userName, description, age, bands);
-
-// Alternar visibilidad de la tarjeta al hacer clic en el botón
-document.getElementById("btn-hide").addEventListener("click", () => {
-        CARD_CONTAINER.style.visibility = 
-            CARD_CONTAINER.style.visibility === "hidden" ? "visible" : "hidden";
+// Creamos la  funcion
+const createCard = (user) => {
+    const card = document.createElement("div"); // Crear la tarjeta
+    card.classList.add("card");
+    const imgContainer = document.createElement("div"); // Crear contenedor de la imagen
+    imgContainer.classList.add("img-container");
+    const image = document.createElement("img"); // Crear contenedor de la imagen
+    image.src = IMAGE_URL;
+    image.alt = `Imagen de ${user.user_name}`;
+    imgContainer.appendChild(image);
+    const userName = document.createElement("h3"); // Crear contenido de la tarjeta
+    const description = document.createElement("p");
+    const age = document.createElement("p");
+    const bandsList = document.createElement("ul");
+    userName.textContent = user.user_name; // Asignación de datos 
+    description.textContent = user.description;
+    age.textContent = `Age: ${user.age}`;
+    const bandItems = user.fav_music.bands.map(band => { // Crear la lista de bandas favoritas
+        const li = document.createElement("li");
+        li.textContent = band;
+        return li;
     });
+    bandsList.append(...bandItems);
+    card.append(imgContainer, userName, description, age, bandsList); // Agregar elementos a la tarjeta
+    return card;
+};
 
+// Función para mostrar las tarjetas de todos los usuarios
+const displayUsers = () => {
+    users.forEach(user => {
+        const userCard = createCard(user);
+        CARD_CONTAINER.appendChild(userCard);
+    });
+};
 
+// Mostrar las tarjetas al cargar la página
+displayUsers();
+
+// Visibilidad de las cards
+BTN_HIDE.addEventListener("click", () => {
+    const cards = document.querySelectorAll(".card");
+    cards.forEach(card => {
+        card.style.visibility = card.style.visibility === "hidden" ? "visible" : "hidden";
+    });
+});

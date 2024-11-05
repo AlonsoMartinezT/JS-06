@@ -15,3 +15,7 @@ const paragraph1 = document.createElement("p");
 paragraph1.textContent = "Parrafo 1";
 document.getElementById("main-content").appendChild(paragraph1);
 
+const h2 = document.createElement("h2");
+h2.textContent = "Usuarios ";
+document.getElementById("texto").appendChild(h2);
+
